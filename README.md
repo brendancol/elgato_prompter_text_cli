@@ -1,28 +1,27 @@
-#### elgato-prompter-text
+# Elgato Prompter Text
 
 A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 It can add, delete, and list prompts in your Texts folder and keeps AppSettings.json in sync (one directory up from Texts).
 
-JSON shape the tool writes/reads:
+### JSON Structure
 
-```json
+The JSON shape the tool writes/reads:
+
+\`\`\`json
 {
   "GUID": "494D4229-59C8-448C-8E32-B93ED48505A2",
   "chapters": ["..."],
   "friendlyName": "Makepath Introduction",
   "index": 1
 }
-```
+\`\`\`
 
-#### Features
+## Features
 
-add – create a new JSON prompt file (auto GUID, auto index unless you supply one)
-
-del – delete prompt file(s) by GUID, friendly name, or filename
-
-ls – list prompts as a clean table (uses pandas if installed)
-
-AppSettings sync – automatically adds/removes the prompt’s GUID in
+- **add** – create a new JSON prompt file (auto GUID, auto index unless you supply one)
+- **del** – delete prompt file(s) by GUID, friendly name, or filename
+- **ls** – list prompts as a clean table (uses pandas if installed)
+- **AppSettings sync** – automatically adds/removes the prompt’s GUID in
 ../AppSettings.json under the key applogic.prompter.libraryList
 
 #### Installation
