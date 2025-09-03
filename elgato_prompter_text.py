@@ -430,6 +430,10 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("--file", help="Delete by exact filename in the directory")
     d.add_argument("-y", "--yes", action="store_true", help="Do not ask for confirmation when multiple matches")
 
+    # gen
+    g = sub.add_parser("gen", help="Generate and add a new prompt script using LLM")
+    g.add_argument("topic", help="Topic for the generated prompt script")
+    
     # ls
     l = sub.add_parser("ls", help="List prompt JSON files as a table")
     l.add_argument("--columns", nargs="+", default=[], help="Subset/reorder columns (e.g. --columns index friendlyName GUID)")
@@ -487,7 +491,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             show_chapters=ns.show_chapters,
         )
         return cmd_ls(args)
-
+    elif ns.cmd == "gen":
+        # Generate prompt script using LLM
+        script = gen_prompter_script(ns.topic)
+        chapters = [line for line in script.split("\n") if line.strip()]
+        args = AddArgs(
+            friendly_name=f"Generated prompt for {ns.topic}",
+            chapters=chapters,
+            index=None,
+            guid=None,
+            dir=choose_dir(ns.dir),
+            dry_run=False
+        )
+        return cmd_add(args)
     else:
         parser.print_help()
         return 2
