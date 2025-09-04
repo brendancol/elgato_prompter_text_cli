@@ -10,8 +10,6 @@ A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 **TOTALLY EXPERIMENTAL**
 **MOSTLY VIBE-CODED :()**
 
-### JSON Structure
-
 ## Features
 
 - **add** – create a new JSON prompt file (auto GUID, auto index unless you supply one)
