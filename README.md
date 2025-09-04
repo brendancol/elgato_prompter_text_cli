@@ -2,6 +2,8 @@
 
 A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 
+Inspired by https://github.com/spieldbergo/elgato_prompter_text_importer
+
 - Integrates with Pydantic-AI to generate prompts
 - Tries to automatically shutdown and restart Camera Hub app (yes this is a hack)
 - Add new prompter scripts from files from the command line
