@@ -8,6 +8,7 @@ A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 
 
 **TOTALLY EXPERIMENTAL**
+**MOSTLY VIBE-CODED :()**
 
 ### JSON Structure
 
