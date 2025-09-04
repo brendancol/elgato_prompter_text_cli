@@ -442,6 +442,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     return p
 
+from restarter import AppRestarter
+
 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
@@ -449,33 +451,36 @@ def main(argv: Optional[List[str]] = None) -> int:
     dir_path = choose_dir(ns.dir)
 
     if ns.cmd == "add":
-        chapters: List[str] = []
-        chapters.extend(ns.chapter or [])
-        if ns.chapters_file:
-            chapters.extend(read_lines(Path(ns.chapters_file)))
-        if ns.from_stdin:
-            stdin_lines = [line.rstrip("\n") for line in sys.stdin if line.strip()]
-            chapters.extend(stdin_lines)
 
-        args = AddArgs(
-            friendly_name=ns.name,
-            chapters=chapters,
-            index=ns.index,
-            guid=ns.guid,
-            dir=dir_path,
-            dry_run=ns.dry_run,
-        )
-        return cmd_add(args)
+        with AppRestarter("Camera Hub"):
+            chapters: List[str] = []
+            chapters.extend(ns.chapter or [])
+            if ns.chapters_file:
+                chapters.extend(read_lines(Path(ns.chapters_file)))
+            if ns.from_stdin:
+                stdin_lines = [line.rstrip("\n") for line in sys.stdin if line.strip()]
+                chapters.extend(stdin_lines)
+
+            args = AddArgs(
+                friendly_name=ns.name,
+                chapters=chapters,
+                index=ns.index,
+                guid=ns.guid,
+                dir=dir_path,
+                dry_run=ns.dry_run,
+            )
+            return cmd_add(args)
 
     elif ns.cmd == "del":
-        args = DelArgs(
-            guid=ns.guid,
-            friendly_name=ns.name,
-            filename=ns.file,
-            dir=dir_path,
-            yes=ns.yes,
-        )
-        return cmd_del(args)
+        with AppRestarter("Camera Hub"):
+            args = DelArgs(
+                guid=ns.guid,
+                friendly_name=ns.name,
+                filename=ns.file,
+                dir=dir_path,
+                yes=ns.yes,
+            )
+            return cmd_del(args)
 
     elif ns.cmd == "ls":
         args = LsArgs(
@@ -490,20 +495,20 @@ def main(argv: Optional[List[str]] = None) -> int:
         return cmd_ls(args)
 
     elif ns.cmd == "gen":
-
-        # Generate prompt script using LLM
-        script = gen_prompter_script(str(ns.topic))
-        
-        chapters = [line for line in script.split("\n") if line.strip()]
-        args = AddArgs(
-            friendly_name=f"Generated prompt for {ns.topic}",
-            chapters=chapters,
-            index=None,
-            guid=None,
-            dir=choose_dir(ns.dir),
-            dry_run=False
-        )
-        return cmd_add(args)
+        with AppRestarter("Camera Hub"):
+            # Generate prompt script using LLM
+            script = gen_prompter_script(str(ns.topic))
+            
+            chapters = [line for line in script.split("\n") if line.strip()]
+            args = AddArgs(
+                friendly_name=f"Generated prompt for {ns.topic}",
+                chapters=chapters,
+                index=None,
+                guid=None,
+                dir=choose_dir(ns.dir),
+                dry_run=False
+            )
+            return cmd_add(args)
     else:
         parser.print_help()
         return 2
