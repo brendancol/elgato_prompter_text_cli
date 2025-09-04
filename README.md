@@ -1,4 +1,4 @@
-# Elgato Prompter Text
+# Elgato Prompter Text Command Line Interface (CLI)
 
 A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 
