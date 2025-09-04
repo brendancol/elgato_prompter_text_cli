@@ -2,18 +2,10 @@
 """
 elgato-prompter-text: Manage a directory of teleprompter JSON files.
 
-Subcommands:
-  - add   : create a new prompt JSON file (also updates ../AppSettings.json)
-  - del   : delete prompt JSON file(s) (also updates ../AppSettings.json)
-  - ls    : list prompt JSON files as a table (uses pandas if available)
+Mostly vibe-coded :()
 
-JSON shape for each prompt:
-{
-    "GUID": "494D4229-59C8-448C-8E32-B93ED48505A2",
-    "chapters": ["..."],
-    "friendlyName": "Makepath Introduction",
-    "index": 1
-}
+Close the CameraHub App when running this...
+Set the ELGATO_PROMPTER_DIR environment variable
 """
 
 from __future__ import annotations
@@ -29,18 +21,7 @@ from pathlib import Path
 from typing import Iterable, List, Optional, Tuple, Dict, Any
 
 
-from magentic import prompt
-
-
-@prompt("""You are a speech writer supplying a script for an Elgato Prompter teleprompter.
-        Output only the script, where each "chapter" for the teleprompter is delineated with a newline
-
-        Write a short script with some decent talking points for the following topic:
-
-        {topic}
-""")
-def gen_prompter_script(topic: str) -> str:
-    ...
+from pydantic_ai import Agent
 
 
 DEFAULT_DIR = Path.cwd()  # override with --dir or $ELGATO_PROMPTER_DIR
@@ -140,7 +121,6 @@ def save_settings(settings_path: Path, data: Dict[str, Any]) -> None:
 def settings_add_guid(texts_dir: Path, guid: str) -> Path:
     spath = get_appsettings_path(texts_dir)
     settings = load_settings(spath)
-    breakpoint()
     lst = settings.get(SETTINGS_KEY)
     if not isinstance(lst, list):
         lst = []
@@ -404,6 +384,23 @@ def cmd_ls(a: LsArgs) -> int:
         return _print_table_plain(rows, a.columns, a.sort, a.reverse, a.limit)
 
 
+
+# Define the agent with your chosen model
+agent = Agent("openai:gpt-4o-mini")
+
+# Define a function that uses the agent to generate the script
+def gen_prompter_script(topic: str) -> str:
+    result = agent.run_sync(
+        f"""Write a short script with some decent talking points for the following topic: {topic}
+
+         ## NOTE
+         -------
+         - The content will be displayed on the Elgato Prompter which uses newlines the delineate chapters.
+         - Don't use markdown because the Elgato Prompter just uses unicode
+        """
+    )
+    return result.output
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="elgato-prompter-text",
@@ -491,9 +488,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             show_chapters=ns.show_chapters,
         )
         return cmd_ls(args)
+
     elif ns.cmd == "gen":
+
         # Generate prompt script using LLM
-        script = gen_prompter_script(ns.topic)
+        script = gen_prompter_script(str(ns.topic))
+        
         chapters = [line for line in script.split("\n") if line.strip()]
         args = AddArgs(
             friendly_name=f"Generated prompt for {ns.topic}",

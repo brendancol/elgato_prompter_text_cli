@@ -1,0 +1,14 @@
+[project]
+name = "elgato-prompter-text"
+version = "0.2.0"
+description = "Manage Elgato Prompter JSON scripts"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["pydantic-ai"]
+
+[project.optional-dependencies]
+table = ["pandas>=2.0"]
+
+[project.scripts]
+elgato-prompter-text = "elgato_prompter_text:main"
+
