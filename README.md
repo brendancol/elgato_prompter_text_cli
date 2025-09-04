@@ -1,56 +1,41 @@
 # Elgato Prompter Text
 
 A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
-It can add, delete, and list prompts in your Texts folder and keeps AppSettings.json in sync (one directory up from Texts).
+
+- Integrates with Pydantic-AI to generate prompts
+- Tries to automatically shutdown and restart Camera Hub app (yes this is a hack)
+- Add new prompter scripts from files from the command line
 
 
-**EXPERIMENTAL**
-**NOTE**: Elgato Camera Hub app should be QUIT / CLOSED / NOT RUNNING when using CLI. 
+**TOTALLY EXPERIMENTAL**
 
 ### JSON Structure
-
-The JSON shape the tool writes/reads:
-
-\`\`\`json
-{
-  "GUID": "494D4229-59C8-448C-8E32-B93ED48505A2",
-  "chapters": ["..."],
-  "friendlyName": "Makepath Introduction",
-  "index": 1
-}
-\`\`\`
 
 ## Features
 
 - **add** – create a new JSON prompt file (auto GUID, auto index unless you supply one)
 - **del** – delete prompt file(s) by GUID, friendly name, or filename
 - **ls** – list prompts as a clean table (uses pandas if installed)
+- **gen**  generate prompts using an LLM via Pydantic-AI
+
 - **AppSettings sync** – automatically adds/removes the prompt’s GUID in
 ../AppSettings.json under the key applogic.prompter.libraryList
 
 #### Installation
 Requirements
 
-Python 3.9+
-
+- Python 3.9+
+- Pydantic-AI  (recommend to include examples for reference)
+```pip install pydantic-ai[examples]```
 (Optional) pandas (used by ls for pretty tables)
 
-Install with pipx (recommended)
+Clone the code from the repo and run install with pip (recommended)
 
 ##### Get the code
 ```bash
 git clone https://github.com/brendancol/elgato_prompter_text_cli.git
 cd elgato_prompter_text_cli
-```
-
-##### From the project directory (where pyproject.toml lives)
-```bash
-pip install .            # minimal install
-```
-
-##### …or include optional table deps:
-```bash
-pip install .[table]     # installs pandas for nicer tables
+pip install -e .            # minimal install
 ```
 
 This exposes the console script:
@@ -65,7 +50,7 @@ The tool needs to know where your Texts directory is.
 
 You can provide it in two ways:
 
-Environment variable: ELGATO_PROMPTER_DIR
+Environment variable: `ELGATO_PROMPTER_DIR`
 
 CLI flag on each command: --dir /path/to/Texts
 
