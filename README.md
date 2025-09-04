@@ -25,6 +25,9 @@ Stuck with copy / paste your script content into the Elgato Camera Hub App, how 
 
 Why stop there, let's tie in LLMs!
 
+```bash
+elgato-prompter-text gen "5-minute presentation about benefits of morning exercise"
+```
 ## Installation
 Requirements
 
