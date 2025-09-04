@@ -8,6 +8,7 @@ A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 
 
 **TOTALLY EXPERIMENTAL**
+
 **MOSTLY VIBE-CODED :()**
 
 ## Features
@@ -15,12 +16,9 @@ A tiny cross-platform CLI to manage Elgato Prompter script JSON files.
 - **add** – create a new JSON prompt file (auto GUID, auto index unless you supply one)
 - **del** – delete prompt file(s) by GUID, friendly name, or filename
 - **ls** – list prompts as a clean table (uses pandas if installed)
-- **gen**  generate prompts using an LLM via Pydantic-AI
+- **gen** - generate prompts using an LLM via Pydantic-AI
 
-- **AppSettings sync** – automatically adds/removes the prompt’s GUID in
-../AppSettings.json under the key applogic.prompter.libraryList
-
-#### Installation
+## Installation
 Requirements
 
 - Python 3.9+
