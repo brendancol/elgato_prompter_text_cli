@@ -20,6 +20,11 @@ Inspired by https://github.com/spieldbergo/elgato_prompter_text_importer
 - **ls** – list prompts as a clean table (uses pandas if installed)
 - **gen** - generate prompts using an LLM via Pydantic-AI
 
+## Marketing Pitch
+Stuck with copy / paste your script content into the Elgato Camera Hub App, how about using the commandline to add it.
+
+Why stop there, let's tie in LLMs!
+
 ## Installation
 Requirements
 
