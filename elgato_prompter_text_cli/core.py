@@ -24,6 +24,9 @@ from typing import Iterable, List, Optional, Tuple, Dict, Any
 from pydantic_ai import Agent
 
 
+from .restarter import AppRestarter
+
+
 DEFAULT_DIR = Path.cwd()  # override with --dir or $ELGATO_PROMPTER_DIR
 ENV_DIR = os.environ.get("ELGATO_PROMPTER_DIR")
 
@@ -442,7 +445,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     return p
 
-from restarter import AppRestarter
 
 
 def main(argv: Optional[List[str]] = None) -> int:

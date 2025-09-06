@@ -10,5 +10,5 @@ dependencies = ["pydantic-ai"]
 table = ["pandas>=2.0"]
 
 [project.scripts]
-elgato-prompter-text = "elgato_prompter_text:main"
+elgato-prompter-text = "elgato_prompter_text_cli:main"
 
